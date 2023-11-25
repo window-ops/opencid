@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>OpenCID (specificație)</title>
+    <link rel="stylesheet" href="../css/stil.css">
+  </head>
+  <body>
+    <header class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid d-flex justify-content-center">
+        <h3 class="my-0 text-center">OpenCID (specificație)</h3>
+      </div>
+    </header>
+    <div class="main-content">
+      <div class="container-fluid pt-3">
+        <div class="list-group mb-3">
+          <a href=".." class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">Duceți-vă înapoi <span>←</span></a>
+        </div>
+        <div class="card mb-3">
+          <div class="card-body">
+            <p>Pentru a obține OpenCID-ul asiguratului, se execută următorii pași:</p>
+            <ul class="list-group mb-3">
+              <li class="list-group-item">Pas 1: Se preia codul numeric personal (CNP) al asiguratului.</li>
+              <li class="list-group-item">Pas 2: Fiecare cifră din CNP este înmulțită cu 47.</li>
+              <li class="list-group-item">Pas 3: Rezultatele înmulțirilor sunt adăugate la un șir de cifre numit OpenCID.</li>
+              <li class="list-group-item">
+                <ul class="list-group">
+                  <li class="list-group-item">Pas 4: Dacă lungimea lui OpenCID este mai mică decât 20 de cifre, se completează șirul cu el însuși până când are 20 de cifre.</li>
+                  <li class="list-group-item">Pas 4: Dacă lungimea lui OpenCID este mai mare de 20 de cifre, se elimină cifrele excedentare.</li>
+                </ul>
+              </li>
+              <li class="list-group-item">
+                <ul class="list-group">
+                  <li class="list-group-item">Pas 5: Dacă CNP-ul introdus este valid, se returnează OpenCID.</li>
+                  <li class="list-group-item">Pas 5: Dacă CNP-ul introdus nu are 13 cifre sau nu este un număr, se returnează un mesaj de eroare.</li>
+                </ul>
+              </li>
+            </ul>
+            <p>Aceasta este o implementare a specificației în Javascript:</p>
+            <div class="card">
+              <div class="card-body">
+                <code>
+                function obtineopenciddincnp(cnp) {<br>
+                &nbsp;&nbsp;var openCID = '';<br>
+                &nbsp;&nbsp;var nrCifre = 20;<br><br>
+                
+                &nbsp;&nbsp;// Verifică dacă CNP-ul introdus are 13 cifre<br>
+                &nbsp;&nbsp;if (cnp.length === 13 &amp;&amp; !isNaN(cnp)) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;// Parcurge fiecare cifră din CNP<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;for (var i = 0; i &lt; cnp.length; i++) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Converteste cifra din CNP la număr și înmulțește cu 47<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var cifraInmultita = parseInt(cnp[i]) * 47;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Adaugă cifrele rezultate la OpenCID<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openCID += cifraInmultita;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;// Repetă primele cifre până când sunt [nrCifre] de cifre dacă sunt mai puțin de [nrCifre] de cifre<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;while (openCID.length &lt; nrCifre) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;openCID += openCID;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;// Elimină ultimele cifre până se ajunge la [nrCifre] de cifre dacă sunt peste [nrCifre] de cifre<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;openCID = openCID.slice(0, nrCifre);<br><br>
+    
+                &nbsp;&nbsp;&nbsp;&nbsp;// Returnează OpenCID-ul obtinut<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return openCID;<br>
+                &nbsp;&nbsp;} else {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;// Returnează un mesaj de eroare dacă CNP-ul introdus nu are 13 cifre sau nu este un număr<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return 'CNPInvalid';<br>
+                &nbsp;&nbsp;}<br>
+                }
+                </code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="card-header">Licența specificației</div>
+          <div class="card-body">
+          <p>Copyright 2023 window-ops</p>
+          <p>Se acordă permisiunea, fără plată, oricărei persoane care obține o copie a acestui software și a fișierelor de documentație asociate (denumit în continuare "Software"), de a utiliza Software-ul fără restricții, inclusiv, fără limitare, dreptul de a utiliza, copia, modifica, combina, publica, distribui, sub-licenția și/sau vinde copii ale Software-ului și de a permite persoanelor cărora li se furnizează Software-ul să facă acest lucru, cu condiția respectării următoarelor condiții:</p>
+          <p>Notificarea de drept de autor de mai sus și această notificare de permisiune trebuie incluse în toate copiile sau porțiuni substanțiale ale Software-ului.</p>
+          <p class="mb-0">SOFTWARE-UL ESTE FURNIZAT "CA ATARE", FĂRĂ NICI O GARANȚIE, EXPRESĂ SAU IMPLICITĂ, INCLUZÂND DAR FĂRĂ A SE LIMITA LA GARANȚIILE DE COMERCIABILITATE, ADECVARE PENTRU UN ANUMIT SCOP ȘI NEÎNCĂLCARE. ÎN NICIUN CAZ AUTORII SAU DETINĂTORII DE DREPTURI DE AUTOR NU VOR FI RESPONSABILI PENTRU ORICE PRETENȚIE, DAUNE SAU ALTĂ RĂSPUNDERE, INDIFERENT DACĂ ESTE VORBA DESPRE O ACȚIUNE ÎN CONTRACT, DELICT SAU ALTĂ FORMĂ, CARE REZULTĂ DIN, ÎN LEGĂTURĂ CU SAU DIN UTILIZAREA SOFTWARE-ULUI SAU A ALTOR TRATATIVE ÎN SOFTWARE.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
