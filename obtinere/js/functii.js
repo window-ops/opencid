@@ -20,7 +20,7 @@ function obtineopenciddincnp(cnp) {
     // Elimină ultimele cifre până se ajunge la [nrCifre] de cifre dacă sunt peste [nrCifre] de cifre
     openCID = openCID.slice(0, nrCifre);
 
-    // Returnează OpenCID-ul obtinut
+    // Returnează OpenCID-ul obținut
     return openCID;
   } else {
     // Returnează un mesaj de eroare dacă CNP-ul introdus nu are 13 cifre sau nu este un număr
